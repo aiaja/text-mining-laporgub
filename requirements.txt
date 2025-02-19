@@ -9,3 +9,5 @@ numpy
 joblib
 streamlit
 streamlit_option_menu
+imblearn
+smote
