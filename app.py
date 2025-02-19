@@ -12,19 +12,19 @@ if not os.path.exists(model_path):
 model = joblib.load(model_path)
 
 # UI Aplikasi
-st.title("🚀 Aplikasi Klasifikasi Keluhan Masyarakat")
-st.write("Masukkan keluhan Anda, dan sistem akan memprediksi kategori keluhan.")
+st.title("🚀 LaporGub Complaint Classification Prototype")
+st.write("Masukkan complaint Anda, dan sistem akan memprediksi kategori complaint.")
 
 # Input Keluhan
-complaint = st.text_area("Masukkan keluhan Anda:")
+complaint = st.text_area("Masukkan complaint Anda:")
 
 # Tombol Prediksi
 if st.button("Prediksi Kategori"):
     if complaint.strip():
         category = predict_category(model, complaint)
-        st.success(f"Kategori Keluhan: {category}")
+        st.success(f"Kategori complaint: {category}")
     else:
-        st.warning("Mohon masukkan keluhan terlebih dahulu.")
+        st.warning("Mohon masukkan complaint terlebih dahulu.")
 
 # Footer
 st.markdown("---")
