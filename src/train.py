@@ -1,11 +1,14 @@
 import pandas as pd
 import joblib
 import os
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, StratifiedKFold
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-from imblearn.over_sampling import SMOTE
+from sklearn.ensemble import StackingClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+
 
 # Load Preprocessed Data
 dataset = pd.read_csv('dataset/clean_dataset_part01.csv', sep=';')
@@ -17,26 +20,35 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 # Load TF-IDF
 Tfidf_Vectorizer = TfidfVectorizer()
-X_train_vec = Tfidf_Vectorizer.fit_transform(X_train)
+Tfidf_Vectorizer = TfidfVectorizer(max_df=0.95, min_df=5)
 
-# SMOTE
-smote = SMOTE(random_state=42)
-X_train_resampled, y_train_resampled = smote.fit_resample(X_train_vec, y_train)
+def define_models():
+  """Defines base classifiers and meta classifier for stacking."""
+  base_classifiers = [
+      ('nb', MultinomialNB()),
+      ('knn', KNeighborsClassifier(n_jobs=-1))
+  ]
+  meta_classifier = LogisticRegression(max_iter=1000, class_weight='balanced', C=0.5)
+  return StackingClassifier(estimators=base_classifiers, final_estimator=meta_classifier, n_jobs=-1)
+
 
 # Pipeline: TF-IDF + Naive Bayes
 pipeline = Pipeline([
     ('tfidf', TfidfVectorizer()),
-    ('model', MultinomialNB())
+    ('model', define_models()),
 ])
 
 # Hyperparameter Tuning (Grid Search)
 params = {
-    'tfidf__max_df': [0.75, 1.0],
-    'tfidf__min_df': [1, 3],
-    'tfidf__ngram_range': [(1, 1), (1, 2)],
-    'model__alpha': [0.1, 0.5, 1.0]
+    'model__nb__alpha': [0.01, 0.1, 0.5, 1, 5],
+    'model__knn__n_neighbors': [3, 5, 7, 9],
+    'model__knn__weights': ['uniform', 'distance'],
+    'model__knn__metric': ['euclidean', 'manhattan']
 }
-model = GridSearchCV(pipeline, params, cv = 5, scoring='f1_weighted', verbose=2, n_jobs=-1)
+
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+model = RandomizedSearchCV(pipeline, param_distributions=params, n_iter=10, cv=cv, scoring='accuracy', n_jobs=-1)
+
 model.fit(X_train, y_train)
 
 # Simpan Model ke Folder 'models'
