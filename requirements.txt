@@ -1,0 +1,13 @@
+pandas 
+matplotlib 
+seaborn 
+nltk 
+Sastrawi 
+scikit-learn 
+PySastrawi
+numpy
+joblib
+streamlit
+streamlit_option_menu
+imblearn
+smote
