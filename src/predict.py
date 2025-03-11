@@ -3,7 +3,7 @@ import joblib
 import os
 
 # Load Dataset Hasil Preprocessing
-dataset = pd.read_csv('dataset/clean_dataset_part01.csv', sep=';')
+dataset = pd.read_csv('dataset/preprocessed_complaints.csv', sep=';')
 X = dataset['complaints'].astype(str)
 
 # Load Model Terlatih
