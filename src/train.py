@@ -28,7 +28,7 @@ def define_models():
   return StackingClassifier(estimators=base_classifiers, final_estimator=meta_classifier, n_jobs=-1)
 
 # Load TF-IDF
-Tfidf_Vectorizer = TfidfVectorizer(max_df=0.95, min_df=5)
+Tfidf_Vectorizer = TfidfVectorizer(max_df=0.95, min_df=5, ngram_range=(2,2))
 
 # Pipeline: TF-IDF + Naive Bayes
 pipeline = Pipeline([
