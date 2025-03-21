@@ -8,6 +8,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import StackingClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeRegressor
+
 
 
 # Load Preprocessed Data

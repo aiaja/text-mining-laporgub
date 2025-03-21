@@ -16,7 +16,7 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 # Load Dataset
-df = pd.read_csv('dataset/datalaporgub-v1.csv')
+df = pd.read_csv('dataset/new_data.csv')
 
 # Data Cleaning: Rename columns and select relevant ones
 df = df.rename(columns={'content': 'complaints', 'sub_category_name': 'sub_categories', 'topic_name': 'topics'})
