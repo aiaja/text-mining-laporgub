@@ -13,7 +13,8 @@ from sklearn.tree import DecisionTreeRegressor
 
 
 # Load Preprocessed Data
-dataset = pd.read_csv('dataset/preprocessed_complaints.csv', sep=';')
+dataset = pd.read_csv('dataset/prep_2024_2025.csv', sep=';')
+dataset = dataset[dataset['category'] != 'saberpungli']
 X = dataset['complaints'].astype(str)
 y = dataset['category']
 
