@@ -3,7 +3,7 @@ import joblib
 import os
 
 # Load Dataset Hasil Preprocessing
-dataset = pd.read_csv('dataset/preprocessed_complaints.csv', sep=';')
+dataset = pd.read_csv('dataset/prep_2024_2025.csv', sep=';')
 X = dataset['complaints'].astype(str)
 
 # Load Model Terlatih
@@ -24,6 +24,6 @@ def predict_category(model, text):
 __all__ = ['predict_category']
 
 # Simpan Hasil Prediksi ke CSV (Best Practice: Simpan hasil untuk audit dan reanalisis)
-output_path = 'dataset/predictions.csv'
+output_path = 'dataset/new_predictions.csv'
 dataset.to_csv(output_path, sep=';', index=False)
 print(f"Predictions saved to {output_path}")
